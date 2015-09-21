@@ -145,4 +145,3 @@ buildDungeon = do
 
 main = do
   putStrLn . showDMap =<< buildDungeon
-
