@@ -1,1 +1,807 @@
-Github Page
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset='utf-8'>
+  <meta content='width=device-width,initial-scale=1.0' name='viewport'>
+  <title>Order of Princess</title>
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/font-awesome.css">
+  <link rel="stylesheet" href="css/custom.css">
+</head>
+
+<body>
+
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a href="#" class="navbar-brand">Order of Princess</a>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+<div class="row">
+
+  <div class="page-header">
+    <ul class="nav nav-pills" id="tabs">
+      <li role="presentation" class="active"><a href="#main">ギルドハウス</a></li>
+      <li role="presentation"><a href="#strategy">作戦会議</a></li>
+      <li role="presentation"><a href="#battle">闘技場</a></li>
+      <li role="presentation"><a href="#dungeon">ダンジョン</a></li>
+    </ul>
+  </div>
+
+  <div class="tab-content">
+    <div class="tab-pane fade active in" id="battle">
+      <div class="col-md-4">
+        <div class="alert alert-info">
+          デビルエンペラーの攻撃！<br>
+          プリンセスは20のダメージを受けた。
+        </div>
+      </div>
+
+      <div class="col-md-8">
+        <div class="panel panel-default">
+          <div class="panel-body" style="height: 160px;">
+            <div class="row">
+              <div class="col-md-offset-4 col-md-4">
+                <div class="enemy">
+                  デビルエンペラー<br>
+                  [毒, 麻痺, スキル抑制]
+                  <div class="progress">
+                    <div class="progress-bar" role="progressbar" style="width: 60%;">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+
+              <div class="col-md-4">
+                <div class="player">
+                  プリンセス<br>
+                  [混乱]
+                  <div class="progress">
+                    <div class="progress-bar" role="progressbar" style="width: 20%;">
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-4">
+                <div class="player">
+                  衛兵<br>&nbsp;
+                  <div class="progress">
+                    <div class="progress-bar" role="progressbar" style="width: 80%;">
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-4">
+                <div class="player">
+                  狂人<br>
+                  [アドレナリン調整]
+                  <div class="progress">
+                    <div class="progress-bar" role="progressbar" style="width: 90%;">
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+          <div class="panel-footer text-right">
+            <button class="btn btn-warning">固有スキル</button>
+            <button class="btn btn-default">次のターン</button>
+          </div>
+        </div>
+        <div class="panel panel-default">
+          <!-- Default panel contents -->
+          <div class="panel-heading">コマンドリスト</div>
+          <div class="panel-body">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>ターン</th>
+                  <th>プリンセス</th>
+                  <th>衛兵</th>
+                  <th>狂人</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td>攻撃</td>
+                  <td>攻撃</td>
+                  <td>攻撃</td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td>攻撃</td>
+                  <td>攻撃</td>
+                  <td>攻撃</td>
+                </tr>
+                <tr>
+                  <td>3</td>
+                  <td>攻撃</td>
+                  <td>攻撃</td>
+                  <td>攻撃</td>
+                </tr>
+                <tr>
+                  <td>4</td>
+                  <td>攻撃</td>
+                  <td>攻撃</td>
+                  <td>攻撃</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-pane fade" id="main">
+      <div class="col-md-4">
+        <div class="alert alert-success" role="alert">
+          プリンセスをパーティに追加した。<br>
+          「さあ、冒険の始まりです」
+        </div>
+
+        <div class="alert alert-success" role="alert">
+          衛兵をパーティに追加した。<br>
+          「姫、私がお供いたしましょう。前線での戦いはお任せください」
+        </div>
+
+        <div class="alert alert-success" role="alert">
+          呪術師をパーティに追加した。<br>
+          「……よろしく」
+        </div>
+
+        <div class="alert alert-info" role="alert">
+          ギルド長が暖かい笑顔で君を迎えてくれた。<br>
+          「いらっしゃい。パーティはよく考えて組むのね。戦場では信頼できない味方は敵と同じよ」
+        </div>
+      </div>
+      <div class="col-md-8">
+        <div class="col-md-12">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">パーティ編成</h3>
+            </div>
+            <div class="panel-body">
+              プリンセス, 衛兵, 呪術師 <br>
+              縦列
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4 career">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">
+                プリンセス(<a data-toggle="modal" data-target="#myModal"> S </a> )
+              </h3>
+            </div>
+            <div class="panel-body">
+              <div class="row">
+                <div class="col-md-3">STR</div>
+                <div class="col-md-8">
+                  <div class="progress">
+                    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 30%;"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-3">TEC</div>
+                <div class="col-md-8">
+                  <div class="progress">
+                    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 90%;"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-3">VIT</div>
+                <div class="col-md-8">
+                  <div class="progress">
+                    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 75%;"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-3">LUC</div>
+                <div class="col-md-8">
+                  <div class="progress">
+                    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 40%;"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-3">AGI</div>
+                <div class="col-md-8">
+                  <div class="progress">
+                    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 50%;"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-3">HP</div>
+                <div class="col-md-8">
+                  <div class="progress">
+                    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 80%;"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-3">MP</div>
+                <div class="col-md-8">
+                  <div class="progress">
+                    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 60%;"></div>
+                  </div>
+                </div>
+              </div>
+
+              <p>
+                <strong>固有スキル</strong><br>
+                特殊陣営・デッキ拡張・王の力
+              </p>
+
+              <button type="button" class="btn btn-primary">パーティに入れる</button>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 career">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">衛兵</h3>
+            </div>
+            <div class="panel-body">
+              <div class="row">
+                <div class="col-md-3">STR</div>
+                <div class="col-md-8">
+                  <div class="progress">
+                    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 85%;"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-3">TEC</div>
+                <div class="col-md-8">
+                  <div class="progress">
+                    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 65%;"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-3">VIT</div>
+                <div class="col-md-8">
+                  <div class="progress">
+                    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 75%;"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-3">LUC</div>
+                <div class="col-md-8">
+                  <div class="progress">
+                    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 55%;"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-3">AGI</div>
+                <div class="col-md-8">
+                  <div class="progress">
+                    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 30%;"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-3">HP</div>
+                <div class="col-md-8">
+                  <div class="progress">
+                    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 90%;"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-3">MP</div>
+                <div class="col-md-8">
+                  <div class="progress">
+                    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 80%;"></div>
+                  </div>
+                </div>
+              </div>
+
+              <p>
+                <strong>固有スキル</strong><br>
+                なし
+              </p>
+
+              <button type="button" class="btn btn-primary">パーティに入れる</button>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 career">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">狂人</h3>
+            </div>
+            <div class="panel-body">
+              <div class="row">
+                <div class="col-md-3">STR</div>
+                <div class="col-md-8">
+                  <div class="progress">
+                    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 99%;"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-3">TEC</div>
+                <div class="col-md-8">
+                  <div class="progress">
+                    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 15%;"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-3">VIT</div>
+                <div class="col-md-8">
+                  <div class="progress">
+                    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 55%;"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-3">LUC</div>
+                <div class="col-md-8">
+                  <div class="progress">
+                    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 40%;"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-3">AGI</div>
+                <div class="col-md-8">
+                  <div class="progress">
+                    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 70%;"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-3">HP</div>
+                <div class="col-md-8">
+                  <div class="progress">
+                    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 99%;"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-3">MP</div>
+                <div class="col-md-8">
+                  <div class="progress">
+                    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 20%;"></div>
+                  </div>
+                </div>
+              </div>
+
+              <p>
+                <strong>固有スキル</strong><br>
+                アドレナリン調整・道連れ
+              </p>
+
+              <button type="button" class="btn btn-primary">パーティに入れる</button>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 career">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">呪術師</h3>
+            </div>
+            <div class="panel-body">
+              <div class="row">
+                <div class="col-md-3">STR</div>
+                <div class="col-md-8">
+                  <div class="progress">
+                    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 10%;"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-3">TEC</div>
+                <div class="col-md-8">
+                  <div class="progress">
+                    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 95%;"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-3">VIT</div>
+                <div class="col-md-8">
+                  <div class="progress">
+                    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 35%;"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-3">LUC</div>
+                <div class="col-md-8">
+                  <div class="progress">
+                    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 80%;"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-3">AGI</div>
+                <div class="col-md-8">
+                  <div class="progress">
+                    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 20%;"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-3">HP</div>
+                <div class="col-md-8">
+                  <div class="progress">
+                    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 35%;"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-3">MP</div>
+                <div class="col-md-8">
+                  <div class="progress">
+                    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 90%;"></div>
+                  </div>
+                </div>
+              </div>
+
+              <p>
+                <strong>固有スキル</strong><br>
+                悪魔の契約・闇の羽衣
+              </p>
+
+              <button type="button" class="btn btn-primary">パーティに入れる</button>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 career">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">祈祷師</h3>
+            </div>
+            <div class="panel-body">
+              <div class="row">
+                <div class="col-md-3">STR</div>
+                <div class="col-md-8">
+                  <div class="progress">
+                    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 20%;"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-3">TEC</div>
+                <div class="col-md-8">
+                  <div class="progress">
+                    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 20%;"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-3">VIT</div>
+                <div class="col-md-8">
+                  <div class="progress">
+                    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 30%;"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-3">LUC</div>
+                <div class="col-md-8">
+                  <div class="progress">
+                    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 99%;"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-3">AGI</div>
+                <div class="col-md-8">
+                  <div class="progress">
+                    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 40%;"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-3">HP</div>
+                <div class="col-md-8">
+                  <div class="progress">
+                    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 55%;"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-3">MP</div>
+                <div class="col-md-8">
+                  <div class="progress">
+                    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 99%;"></div>
+                  </div>
+                </div>
+              </div>
+
+              <p>
+                <strong>固有スキル</strong><br>
+                ルーレット
+              </p>
+
+              <button type="button" class="btn btn-primary">パーティに入れる</button>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 career">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">踊り子</h3>
+            </div>
+            <div class="panel-body">
+              <div class="row">
+                <div class="col-md-3">STR</div>
+                <div class="col-md-8">
+                  <div class="progress">
+                    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 40%;"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-3">TEC</div>
+                <div class="col-md-8">
+                  <div class="progress">
+                    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 35%;"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-3">VIT</div>
+                <div class="col-md-8">
+                  <div class="progress">
+                    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 50%;"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-3">LUC</div>
+                <div class="col-md-8">
+                  <div class="progress">
+                    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 80%;"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-3">AGI</div>
+                <div class="col-md-8">
+                  <div class="progress">
+                    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 90%;"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-3">HP</div>
+                <div class="col-md-8">
+                  <div class="progress">
+                    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 55%;"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-3">MP</div>
+                <div class="col-md-8">
+                  <div class="progress">
+                    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 40%;"></div>
+                  </div>
+                </div>
+              </div>
+
+              <p>
+                <strong>固有スキル</strong><br>
+                回避術・高速移動
+              </p>
+
+              <button type="button" class="btn btn-primary">パーティに入れる</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="tab-pane fade" id="strategy">
+      <div class="col-md-4">
+        <div class="alert alert-success" role="alert">
+          作戦を選んでください。<br>
+          作戦は各ターンに誰がどの行動を取るかを指定できます。
+        </div>
+      </div>
+      <div class="col-md-8">
+        <div class="panel panel-default">
+          <div class="panel-heading">作戦リスト</div>
+          <div class="panel-body">
+            <div class="dropdown">
+              <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                パーティメンバー
+                <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                <li><a href="#">プリンセス・衛兵・呪術師</a></li>
+                <li><a href="#">踊り子・ガーディアン・狂人</a></li>
+              </ul>
+            </div>
+
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>作戦名</th>
+                  <th>メンバー</th>
+                  <th>ターン数</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>作戦その1</td>
+                  <td>プリンセス・衛兵・呪術師</td>
+                  <td>5T</td>
+                  <td><button type="button" class="btn btn-default btn-sm">編集</button></td>
+                </tr>
+
+                <tr>
+                  <td>作戦その2</td>
+                  <td>踊り子・ガーディアン・祈祷師</td>
+                  <td>3T</td>
+                  <td><button type="button" class="btn btn-default btn-sm">編集</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="panel panel-default">
+          <div class="panel-heading">作戦その1</div>
+
+          <!-- Table -->
+          <div class="panel-body">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>T</th>
+                  <th>プリンセス</th>
+                  <th>衛兵</th>
+                  <th>呪術師</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td>決起の詠唱</td>
+                  <td>攻撃</td>
+                  <td>毒の呪い</td>
+                </tr>
+
+                <tr>
+                  <td>2</td>
+                  <td>攻撃</td>
+                  <td>攻撃</td>
+                  <td>麻痺の呪い</td>
+                </tr>
+
+                <tr>
+                  <td>3</td>
+                  <td>神秘の詠唱</td>
+                  <td>攻撃</td>
+                  <td>攻撃</td>
+                </tr>
+
+                <tr>
+                  <td>4</td>
+                  <td>攻撃</td>
+                  <td>攻撃</td>
+                  <td>攻撃</td>
+                </tr>
+
+                <tr>
+                  <td>5</td>
+                  <td>攻撃</td>
+                  <td>攻撃</td>
+                  <td>攻撃</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="tab-pane fade" id="dungeon">
+      <span id="player">@</span>
+      <div id="dungeon-field"></div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">プリンセス</h4>
+      </div>
+      <div class="modal-body">
+        <p>
+          戦況を見極め、的確な指示を出すことに長けた職業。<br>
+          パーティの動き方を予め決めておいて指示を出すことができる。<br>
+          レベルアップで扱う戦略の幅と数が増える。<br><br>
+          かつて突然現れた半獣部族が、自らを恐ろしい魔物の姿に変えて威嚇し国を治めたという記録が残っている。<br>
+          彼女もその血を引いているため、固有スキル「王の力」によって恐ろしい魔物の姿になることができる。<br>
+          その際運動能力が増す。
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="js/jquery.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/main.js"></script>
+
+<script>
+$('#tabs a').click(function (e) {
+  e.preventDefault()
+  $(this).tab('show')
+})
+</script>
+
+</body>
+</html>
