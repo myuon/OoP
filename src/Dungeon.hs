@@ -1,10 +1,16 @@
-module Dungeon where
+module Dungeon (width, height, area, areaWith, DMap, insertAll, buildDungeon, chooseSpawn) where
 
+--import System.Random
+import Haste
 import qualified Data.Map as M
 import Data.List
-import System.Random
 import Control.Monad.State
 import Debug.Trace
+
+randomRIO :: (Random a) => (a,a) -> IO a
+randomRIO ix = do
+  sd <- newSeed
+  return $ fst $ randomR ix sd
 
 type DMap = M.Map (Int,Int) Char
 
@@ -13,7 +19,10 @@ height = 25
 complexity = 2
 
 area :: DMap
-area = M.fromList $ zip [(i,j) | i<-[0..width - 1], j<-[0..height - 1]] $ repeat '.'
+area = areaWith ' '
+
+areaWith :: Char -> DMap
+areaWith c = M.fromList $ zip [(i,j) | i<-[0..width - 1], j<-[0..height - 1]] $ repeat c
 
 roomMinWidth = 2
 roomMinHeight = 2
@@ -141,7 +150,16 @@ buildDungeon = do
   ws <- arrangeRooms bs
   (cor,es) <- buildCorridor bs ws
   bdg <- buildBridge cor es
-  return $ paintDotWith '@' (buildDoor cor es) $ paintBoxWith '#' ws $ paintBoxWith '*' cor $ paintBoxWith '*' bdg $ area
+  return $ paintDotWith '#' (buildDoor cor es) $ paintBoxWith '#' ws $ paintBoxWith '*' cor $ paintBoxWith '*' bdg $ area
+
+choose :: (Show a) => [a] -> IO a
+choose xs = do
+  n <- randomRIO (0, length xs - 1)
+  return $ xs !! n
+
+chooseSpawn :: DMap -> IO (Int,Int)
+chooseSpawn dm = choose $
+  [(i,j) | i<-[0..20], j<-[0..20], dm M.! (i,j) == '#']
 
 main = do
   putStrLn . showDMap =<< buildDungeon
