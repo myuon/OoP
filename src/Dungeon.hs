@@ -14,8 +14,8 @@ randomRIO ix = do
 
 type DMap = M.Map (Int,Int) Char
 
-width = 75
-height = 25
+width = 45
+height = 35
 complexity = 2
 
 area :: DMap
@@ -150,7 +150,7 @@ buildDungeon = do
   ws <- arrangeRooms bs
   (cor,es) <- buildCorridor bs ws
   bdg <- buildBridge cor es
-  return $ paintDotWith '#' (buildDoor cor es) $ paintBoxWith '#' ws $ paintBoxWith '*' cor $ paintBoxWith '*' bdg $ area
+  return $ paintDotWith '#' (buildDoor cor es) $ paintBoxWith '#' ws $ paintBoxWith '-' cor $ paintBoxWith '-' bdg $ area
 
 choose :: (Show a) => [a] -> IO a
 choose xs = do
