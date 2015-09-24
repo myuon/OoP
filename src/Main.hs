@@ -18,7 +18,6 @@ import Lens.Family2.Unchecked
 import Dungeon
 import Battle
 
-data Screen = Default | Battle deriving (Show)
 data Field = Field {
   _keyStates :: IM.IntMap Bool,
   _position :: (Int,Int),
@@ -26,7 +25,6 @@ data Field = Field {
   _dMap :: DMap,
   _dDiscoverMap :: DMap,
   _encounterCount :: Int,
-  _screen :: Screen,
   _board :: Board
 } deriving (Show)
 
@@ -60,7 +58,6 @@ defField = do
     _dMap = dm,
     _dDiscoverMap = areaWith '.',
     _encounterCount = 0,
-    _screen = Default,
     _board = Board [princess,madman,sentry] [enemy1] 0
   }
 
@@ -109,7 +106,7 @@ main = do
   onceStateT reff $ updateField reff
 
   withElem "battle" $ \e ->
-    initBattleScreen e reff
+    initBattleScreen e reff $ return ()
 
 characterPlayerHTML :: Character -> String
 characterPlayerHTML chara = concat [
@@ -144,8 +141,8 @@ characterEnemyHTML chara = concat [
   "</div>"
   ]
 
-initBattleScreen :: MonadIO m => Elem -> IORef Field -> m ()
-initBattleScreen em reff = do
+initBattleScreen :: MonadIO m => Elem -> IORef Field -> IO () -> m ()
+initBattleScreen em reff cont = do
   b <- liftIO $ fmap (^. board) $ readIORef reff
 
   withElemsQS em "#player-chara" $ \[e] -> do
@@ -161,6 +158,7 @@ initBattleScreen em reff = do
   withElemsQS em "#step-battle" $ \[e] -> do
     liftIO $ onEvent e Click $ \_ -> do
       onceStateT reff $ zoom board runBoard
+      cont
 
       b <- fmap (^. board) $ readIORef reff
       displayBattleScreen em b
@@ -246,11 +244,24 @@ updateField reff = do
       setStyle e' "display" "block"
 
     withElem "dungeon-battle" $ \e -> do
-      initBattleScreen e reff
+      initBattleScreen e reff $ do
+        f <- readIORef reff
+        when (all (<= 0) $ fmap (^. hp) $ f ^. board ^. enemy) $ do
+          taboff ()
+
+          withElemsQS document "#tabs a[href=\"#dungeon-battle\"]" $ \[e] -> do
+            e' <- getParent e
+            setStyle e' "display" "none"
+
+          withElemsQS e "#player-chara" $ mapM_ $ \e0 -> setHTML e0 ""
+          withElemsQS e "#enemy-chara" $ mapM_ $ \e0 -> setHTML e0 ""
 
   where
     tabon :: () -> IO ()
     tabon = ffi $ toJSString "function(){ $('#tabs a[href=\"#dungeon-battle\"]').tab('show'); }"
+
+    taboff :: () -> IO ()
+    taboff = ffi $ toJSString "function(){ $('#tabs a[href=\"#dungeon\"]').tab('show'); }"
 
     moveTo (dx,dy) = do
       (x,y) <- use position
@@ -265,6 +276,3 @@ onceStateT ref m = do
   x <- readIORef ref
   x' <- execStateT m x
   writeIORef ref $! x'
-
-loopStateT :: Int -> IORef s -> StateT s IO () -> IO ()
-loopStateT c ref m = void $ setTimer (Repeat c) $ onceStateT ref m
