@@ -28,11 +28,12 @@
       <li role="presentation"><a href="#strategy">作戦会議</a></li>
       <li role="presentation"><a href="#battle">闘技場</a></li>
       <li role="presentation"><a href="#dungeon">ダンジョン</a></li>
+      <li role="presentation" style="display: none"><a href="#dungeon-battle">戦闘中</a></li>
     </ul>
   </div>
 
   <div class="tab-content">
-    <div class="tab-pane fade active in" id="battle">
+    <div class="tab-pane fade" id="battle">
       <div class="col-md-4">
         <div class="alert alert-info">
           デビルエンペラーの攻撃！<br>
@@ -42,7 +43,24 @@
 
       <div class="col-md-8">
         <div class="panel panel-default">
-          <div class="panel-body" style="height: 160px;">
+          <div class="panel-body">
+            <div class="row" id="enemy-chara">
+            </div>
+
+            <hr>
+
+            <div class="row" id="player-chara">
+            </div>
+          </div>
+
+          <div class="panel-footer text-right">
+            <button class="btn btn-default" id="step-battle">次のターン</button>
+          </div>
+        </div>
+
+
+        <div class="panel panel-default">
+          <div class="panel-body">
             <div class="row">
               <div class="col-md-offset-4 col-md-4">
                 <div class="enemy">
@@ -91,6 +109,8 @@
 
             </div>
           </div>
+
+
           <div class="panel-footer text-right">
             <button class="btn btn-warning">固有スキル</button>
             <button class="btn btn-default">次のターン</button>
@@ -759,9 +779,89 @@
 
     </div>
 
-    <div class="tab-pane fade" id="dungeon">
-      <span id="player">@</span>
-      <div id="dungeon-field"></div>
+    <div class="tab-pane fade active in" id="dungeon">
+      <div class="col-md-4">
+        <div class="alert alert-info">
+          デビルエンペラーの攻撃！<br>
+          プリンセスは20のダメージを受けた。
+        </div>
+      </div>
+
+      <div class="col-md-8">
+        <span id="player">@</span>
+        <div id="dungeon-field"></div>
+      </div>
+    </div>
+
+    <div class="tab-pane fade" id="dungeon-battle">
+      <div class="col-md-4">
+        <div class="alert alert-info">
+          デビルエンペラーの攻撃！<br>
+          プリンセスは20のダメージを受けた。
+        </div>
+      </div>
+
+      <div class="col-md-8">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="row" id="enemy-chara">
+            </div>
+
+            <hr>
+
+            <div class="row" id="player-chara">
+            </div>
+          </div>
+
+          <div class="panel-footer text-right">
+            <button class="btn btn-default" id="step-battle">次のターン</button>
+          </div>
+        </div>
+
+        <div class="panel panel-default">
+          <!-- Default panel contents -->
+          <div class="panel-heading">コマンドリスト</div>
+          <div class="panel-body">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>ターン</th>
+                  <th>プリンセス</th>
+                  <th>衛兵</th>
+                  <th>狂人</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td>攻撃</td>
+                  <td>攻撃</td>
+                  <td>攻撃</td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td>攻撃</td>
+                  <td>攻撃</td>
+                  <td>攻撃</td>
+                </tr>
+                <tr>
+                  <td>3</td>
+                  <td>攻撃</td>
+                  <td>攻撃</td>
+                  <td>攻撃</td>
+                </tr>
+                <tr>
+                  <td>4</td>
+                  <td>攻撃</td>
+                  <td>攻撃</td>
+                  <td>攻撃</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
     </div>
 
   </div>
