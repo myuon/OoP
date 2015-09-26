@@ -14,6 +14,7 @@ import Data.List
 import Lens.Family2
 import Lens.Family2.State.Lazy
 import Lens.Family2.Unchecked
+import Debug.Trace
 
 import Dungeon
 import Battle
@@ -58,7 +59,8 @@ defField = do
     _dMap = dm,
     _dDiscoverMap = areaWith '.',
     _encounterCount = 0,
-    _board = Board [princess,madman,sentry] [enemy1] 0
+    _board = Board [princess,madman,sentry] [enemy1] 0 $
+      IM.fromList [(100, M.fromList [("プリンセス", fromList [Attack, Attack, Attack])])]
   }
 
 htmlDMap :: DMap -> String
@@ -108,6 +110,121 @@ main = do
   withElem "battle" $ \e ->
     initBattleScreen e reff $ return ()
 
+  withElem "make-party" $ \e -> do
+    forM_ [princess, sentry, madman, shaman, gambler, dancer] $ \c -> do
+      appendHTML e $ characterDetailHTML c
+
+  updatePlayerParty reff
+
+  withElemsQS document "#add-tactic-btn" $ mapM_ $ \e -> do
+    onEvent e Click $ \_ -> do
+      onceStateT reff $ do
+        ps <- use (board . player)
+        board . tacticList %= addTactic (M.fromList $ zip (fmap (^.name) ps) (repeat $ fromList [Attack, Attack, Attack]))
+
+      updateTacticTBody reff
+
+  updateTacticTBody reff
+
+updateTacticTBody :: MonadIO m => IORef Field -> m ()
+updateTacticTBody reff = do
+  liftIO $ withElem "tactic-list-tbody" $ \e -> do
+    field <- readIORef reff
+    setHTML e $ tacticHTML $ field ^. board ^. tacticList
+
+    forM_ (IM.assocs $ field ^. board ^. tacticList) $ \(i,_) -> do
+      withElemsQS e ("#edit-tactic-" ++ show i) $ mapM_ $ \e -> do
+        onEvent e Click $ \_ -> do
+          withElem "tactic-detail" $ \e' -> do
+            setHTML e' $ tacticTableHTML i $ (field ^. board ^. tacticList) IM.! i
+            selectpicker ()
+  where
+    selectpicker :: () -> IO ()
+    selectpicker = ffi $ toJSString "function() { $('.selectpicker').selectpicker(); }"
+
+tacticTableHTML :: Int -> Tactic -> String
+tacticTableHTML i tt = concat $
+  ["<div class=\"panel panel-default\">",
+  "  <div class=\"panel-heading\"># " ++ show i ++ "</div>",
+  "  <div class=\"panel-body\">",
+  "    <table class=\"table\">",
+  "      <thead>",
+  "        <tr>",
+  "          <th>T</th>"]
+  ++ charaTHs (M.keys tt) ++
+  ["        </tr>",
+  "      </thead>",
+  "      <tbody>"]
+  ++ turnTDs ++
+  ["      </tbody>",
+  "    </table>",
+  "  </div>",
+  "</div>"]
+  where
+    tacticSize :: Int
+    tacticSize = listSize $ head $ M.elems tt
+
+    charaTHs :: [String] -> [String]
+    charaTHs cs = fmap (\c -> "<th>" ++ c ++ "</th>") cs
+
+    turnTDs :: [String]
+    turnTDs = fmap (\(i,x) -> "<tr>" ++ "<td>" ++ show i ++ "</td>" ++ concat x ++ "</tr>") $ zip [1..] $ fmap (fmap (\x -> "<td>" ++ selectHTML x ++ "</td>")) tts
+      where
+        selectHTML :: String -> String
+        selectHTML com = concat $
+          ["<select class=\"selectpicker\">",
+          concat (fmap (optionHTML com) $ fmap show $ [Attack, Defence, Escape]),
+          "</select>"]
+
+        optionHTML :: String -> String -> String
+        optionHTML com opt = case com == opt of
+          True -> "<option selected>" ++ opt ++ "</option>"
+          False -> "<option>" ++ opt ++ "</option>"
+
+        tts :: [[String]]
+        tts = transpose $ fmap (fmap show . IM.elems . commandMap) $ M.elems tt
+
+tacticHTML :: TacticList -> String
+tacticHTML ttl = concat $ map fromTactic (IM.assocs ttl) where
+  fromTactic (i, tt) = concat [
+    "<tr>",
+    "  <td>" ++ show i ++ "</td>",
+    "  <td>" ++ (concat $ intersperse "・" $ M.keys tt) ++ "</td>",
+    "  <td>" ++ show (listSize $ head $ M.elems tt) ++ "</td>",
+    "  <td><button type=\"button\" class=\"btn btn-default btn-sm\" id=\"edit-tactic-" ++ show i ++ "\">編集</button></td>",
+    "</tr>"]
+
+updatePlayerParty :: MonadIO m => IORef Field -> m ()
+updatePlayerParty reff = do
+  field <- liftIO $ readIORef reff
+  liftIO $ withElem "party-display" $ \e -> do
+    setHTML e $ concat $ intersperse "," $ fmap (^.name) $ field ^. board ^. player
+
+  liftIO $ withElem "make-party" $ \e -> do
+    forM_ [princess, sentry, madman, shaman, gambler, dancer] $ \c -> do
+      withElemsQS e ("#character-detail-" ++ c ^. name ++ " #join-party-btn") $ mapM_ $ \e' -> do
+        field <- readIORef reff
+        case c `elemIndex` (field ^. board ^. player) of
+          Just n -> do
+            setHTML e' $ concat $
+              ["<button type=\"button\" class=\"btn btn-primary btn-sm\" disabled=\"disabled\">パーティメンバー(" ++ show n ++ ")</button>&nbsp;",
+               "<button type=\"button\" class=\"btn btn-default btn-sm\" id=\"remove-party-go\">メンバーからはずす</button>"]
+            withElemsQS e' "#remove-party-go" $ mapM_ $ \e -> do
+              void $ onEvent e Click $ \_ -> do
+                onceStateT reff $ board . player %= delete c
+                updatePlayerParty reff
+
+          Nothing -> do
+            if (>= 3) $ length $ field ^. board ^. player
+              then do
+                setHTML e' "<button type=\"button\" class=\"btn btn-primary btn-sm\" disabled=\"disabled\">パーティに入れる</button>"
+              else do
+                setHTML e' "<button type=\"button\" class=\"btn btn-primary btn-sm\" id=\"join-party-go\">パーティに入れる</button>"
+                withElemsQS e' "#join-party-go" $ mapM_ $ \e -> do
+                  void $ onEvent e Click $ \_ -> do
+                    onceStateT reff $ board . player %= (++ [c])
+                    updatePlayerParty reff
+
 characterPlayerHTML :: Character -> String
 characterPlayerHTML chara = concat [
   "<div class=\"col-md-4\">",
@@ -124,8 +241,7 @@ characterPlayerHTML chara = concat [
   "      </div>",
   "    </div>",
   "  </div>",
-  "</div>"
-  ]
+  "</div>"]
 
 characterEnemyHTML :: Character -> String
 characterEnemyHTML chara = concat [
@@ -138,8 +254,7 @@ characterEnemyHTML chara = concat [
   "      </div>",
   "    </div>",
   "  </div>",
-  "</div>"
-  ]
+  "</div>"]
 
 initBattleScreen :: MonadIO m => Elem -> IORef Field -> IO () -> m ()
 initBattleScreen em reff cont = do

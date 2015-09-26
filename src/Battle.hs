@@ -3,15 +3,21 @@ module Battle (
   ix,
 
   Board (Board),
+  Tactic,
+  TacticList,
+  addTactic,
   runBoard,
   player,
   enemy,
+  turn,
+  tacticList,
 
   module Character
 ) where
 
 import Control.Monad.State
 import Data.List
+import qualified Data.Map as M
 import qualified Data.IntMap as IM
 import Lens.Family2
 import Lens.Family2.State.Lazy
@@ -33,10 +39,18 @@ runCharacter = do
   commandList .= cl
   return c
 
+type Tactic = M.Map String CommandList
+type TacticList = IM.IntMap Tactic
+
+addTactic :: Tactic -> TacticList -> TacticList
+addTactic x tt = IM.insert (mi + 1) x tt where
+  mi = maximum $ IM.keys tt
+
 data Board = Board {
   _player :: [Character],
   _enemy :: [Character],
-  _turn :: Int
+  _turn :: Int,
+  _tacticList :: TacticList
 } deriving (Show)
 
 player :: Lens' Board [Character]
@@ -45,6 +59,8 @@ enemy :: Lens' Board [Character]
 enemy = lens _enemy (\f x -> f { _enemy = x })
 turn :: Lens' Board Int
 turn = lens _turn (\f x -> f { _turn = x })
+tacticList :: Lens' Board TacticList
+tacticList = lens _tacticList (\f x -> f { _tacticList = x })
 
 attackCalc :: Character -> Int
 attackCalc ch = (ch ^. strength) * 5
@@ -86,7 +102,7 @@ runBoard = do
   lift . print =<< use enemy
 
 main = do
-  let b = Board [princess, madman] [enemy1] 0
+  let b = Board [princess, madman] [enemy1] 0 $ IM.fromList []
   execStateT (runBoard >> runBoard >> runBoard >> runBoard >> runBoard) b
 
 {-
