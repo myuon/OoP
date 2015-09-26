@@ -5,6 +5,7 @@
   <meta content='width=device-width,initial-scale=1.0' name='viewport'>
   <title>Order of Princess</title>
   <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/bootstrap-select.min.css">
   <link rel="stylesheet" href="css/font-awesome.css">
   <link rel="stylesheet" href="css/custom.css">
 </head>
@@ -190,489 +191,18 @@
             <div class="panel-heading">
               <h3 class="panel-title">パーティ編成</h3>
             </div>
-            <div class="panel-body">
-              プリンセス, 衛兵, 呪術師 <br>
-              縦列
+            <div class="panel-body" id="party-display">
             </div>
           </div>
         </div>
 
-        <div class="col-md-4 career">
-          <div class="panel panel-default">
-            <div class="panel-heading">
-              <h3 class="panel-title">
-                プリンセス(<a data-toggle="modal" data-target="#myModal"> S </a> )
-              </h3>
-            </div>
-            <div class="panel-body">
-              <div class="row">
-                <div class="col-md-3">STR</div>
-                <div class="col-md-8">
-                  <div class="progress">
-                    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 30%;"></div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="col-md-3">TEC</div>
-                <div class="col-md-8">
-                  <div class="progress">
-                    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 90%;"></div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="col-md-3">VIT</div>
-                <div class="col-md-8">
-                  <div class="progress">
-                    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 75%;"></div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="col-md-3">LUC</div>
-                <div class="col-md-8">
-                  <div class="progress">
-                    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 40%;"></div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="col-md-3">AGI</div>
-                <div class="col-md-8">
-                  <div class="progress">
-                    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 50%;"></div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="col-md-3">HP</div>
-                <div class="col-md-8">
-                  <div class="progress">
-                    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 80%;"></div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="col-md-3">MP</div>
-                <div class="col-md-8">
-                  <div class="progress">
-                    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 60%;"></div>
-                  </div>
-                </div>
-              </div>
-
-              <p>
-                <strong>固有スキル</strong><br>
-                特殊陣営・デッキ拡張・王の力
-              </p>
-
-              <button type="button" class="btn btn-primary">パーティに入れる</button>
-            </div>
-          </div>
+        <div id="make-party">
         </div>
-        <div class="col-md-4 career">
-          <div class="panel panel-default">
-            <div class="panel-heading">
-              <h3 class="panel-title">衛兵</h3>
-            </div>
-            <div class="panel-body">
-              <div class="row">
-                <div class="col-md-3">STR</div>
-                <div class="col-md-8">
-                  <div class="progress">
-                    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 85%;"></div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="col-md-3">TEC</div>
-                <div class="col-md-8">
-                  <div class="progress">
-                    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 65%;"></div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="col-md-3">VIT</div>
-                <div class="col-md-8">
-                  <div class="progress">
-                    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 75%;"></div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="col-md-3">LUC</div>
-                <div class="col-md-8">
-                  <div class="progress">
-                    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 55%;"></div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="col-md-3">AGI</div>
-                <div class="col-md-8">
-                  <div class="progress">
-                    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 30%;"></div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="col-md-3">HP</div>
-                <div class="col-md-8">
-                  <div class="progress">
-                    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 90%;"></div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="col-md-3">MP</div>
-                <div class="col-md-8">
-                  <div class="progress">
-                    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 80%;"></div>
-                  </div>
-                </div>
-              </div>
-
-              <p>
-                <strong>固有スキル</strong><br>
-                なし
-              </p>
-
-              <button type="button" class="btn btn-primary">パーティに入れる</button>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4 career">
-          <div class="panel panel-default">
-            <div class="panel-heading">
-              <h3 class="panel-title">狂人</h3>
-            </div>
-            <div class="panel-body">
-              <div class="row">
-                <div class="col-md-3">STR</div>
-                <div class="col-md-8">
-                  <div class="progress">
-                    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 99%;"></div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="col-md-3">TEC</div>
-                <div class="col-md-8">
-                  <div class="progress">
-                    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 15%;"></div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="col-md-3">VIT</div>
-                <div class="col-md-8">
-                  <div class="progress">
-                    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 55%;"></div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="col-md-3">LUC</div>
-                <div class="col-md-8">
-                  <div class="progress">
-                    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 40%;"></div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="col-md-3">AGI</div>
-                <div class="col-md-8">
-                  <div class="progress">
-                    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 70%;"></div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="col-md-3">HP</div>
-                <div class="col-md-8">
-                  <div class="progress">
-                    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 99%;"></div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="col-md-3">MP</div>
-                <div class="col-md-8">
-                  <div class="progress">
-                    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 20%;"></div>
-                  </div>
-                </div>
-              </div>
-
-              <p>
-                <strong>固有スキル</strong><br>
-                アドレナリン調整・道連れ
-              </p>
-
-              <button type="button" class="btn btn-primary">パーティに入れる</button>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4 career">
-          <div class="panel panel-default">
-            <div class="panel-heading">
-              <h3 class="panel-title">呪術師</h3>
-            </div>
-            <div class="panel-body">
-              <div class="row">
-                <div class="col-md-3">STR</div>
-                <div class="col-md-8">
-                  <div class="progress">
-                    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 10%;"></div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="col-md-3">TEC</div>
-                <div class="col-md-8">
-                  <div class="progress">
-                    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 95%;"></div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="col-md-3">VIT</div>
-                <div class="col-md-8">
-                  <div class="progress">
-                    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 35%;"></div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="col-md-3">LUC</div>
-                <div class="col-md-8">
-                  <div class="progress">
-                    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 80%;"></div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="col-md-3">AGI</div>
-                <div class="col-md-8">
-                  <div class="progress">
-                    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 20%;"></div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="col-md-3">HP</div>
-                <div class="col-md-8">
-                  <div class="progress">
-                    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 35%;"></div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="col-md-3">MP</div>
-                <div class="col-md-8">
-                  <div class="progress">
-                    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 90%;"></div>
-                  </div>
-                </div>
-              </div>
-
-              <p>
-                <strong>固有スキル</strong><br>
-                悪魔の契約・闇の羽衣
-              </p>
-
-              <button type="button" class="btn btn-primary">パーティに入れる</button>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4 career">
-          <div class="panel panel-default">
-            <div class="panel-heading">
-              <h3 class="panel-title">祈祷師</h3>
-            </div>
-            <div class="panel-body">
-              <div class="row">
-                <div class="col-md-3">STR</div>
-                <div class="col-md-8">
-                  <div class="progress">
-                    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 20%;"></div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="col-md-3">TEC</div>
-                <div class="col-md-8">
-                  <div class="progress">
-                    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 20%;"></div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="col-md-3">VIT</div>
-                <div class="col-md-8">
-                  <div class="progress">
-                    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 30%;"></div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="col-md-3">LUC</div>
-                <div class="col-md-8">
-                  <div class="progress">
-                    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 99%;"></div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="col-md-3">AGI</div>
-                <div class="col-md-8">
-                  <div class="progress">
-                    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 40%;"></div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="col-md-3">HP</div>
-                <div class="col-md-8">
-                  <div class="progress">
-                    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 55%;"></div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="col-md-3">MP</div>
-                <div class="col-md-8">
-                  <div class="progress">
-                    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 99%;"></div>
-                  </div>
-                </div>
-              </div>
-
-              <p>
-                <strong>固有スキル</strong><br>
-                ルーレット
-              </p>
-
-              <button type="button" class="btn btn-primary">パーティに入れる</button>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4 career">
-          <div class="panel panel-default">
-            <div class="panel-heading">
-              <h3 class="panel-title">踊り子</h3>
-            </div>
-            <div class="panel-body">
-              <div class="row">
-                <div class="col-md-3">STR</div>
-                <div class="col-md-8">
-                  <div class="progress">
-                    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 40%;"></div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="col-md-3">TEC</div>
-                <div class="col-md-8">
-                  <div class="progress">
-                    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 35%;"></div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="col-md-3">VIT</div>
-                <div class="col-md-8">
-                  <div class="progress">
-                    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 50%;"></div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="col-md-3">LUC</div>
-                <div class="col-md-8">
-                  <div class="progress">
-                    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 80%;"></div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="col-md-3">AGI</div>
-                <div class="col-md-8">
-                  <div class="progress">
-                    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 90%;"></div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="col-md-3">HP</div>
-                <div class="col-md-8">
-                  <div class="progress">
-                    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 55%;"></div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="col-md-3">MP</div>
-                <div class="col-md-8">
-                  <div class="progress">
-                    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 40%;"></div>
-                  </div>
-                </div>
-              </div>
-
-              <p>
-                <strong>固有スキル</strong><br>
-                回避術・高速移動
-              </p>
-
-              <button type="button" class="btn btn-primary">パーティに入れる</button>
-            </div>
-          </div>
-        </div>
-
       </div>
 
     </div>
 
-    <div class="tab-pane fade" id="strategy">
+    <div class="tab-pane fade active in" id="strategy">
       <div class="col-md-4">
         <div class="alert alert-success" role="alert">
           作戦を選んでください。<br>
@@ -683,7 +213,7 @@
         <div class="panel panel-default">
           <div class="panel-heading">作戦リスト</div>
           <div class="panel-body">
-            <div class="dropdown">
+            <div class="dropdown" style="display: inline-block">
               <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                 パーティメンバー
                 <span class="caret"></span>
@@ -694,38 +224,31 @@
               </ul>
             </div>
 
+            <button class="btn btn-primary" type="button" id="add-tactic-btn">作戦追加</button>
+
+            <hr>
+
             <table class="table">
               <thead>
                 <tr>
-                  <th>作戦名</th>
+                  <th>#</th>
                   <th>メンバー</th>
                   <th>ターン数</th>
                   <th></th>
                 </tr>
               </thead>
-              <tbody>
-                <tr>
-                  <td>作戦その1</td>
-                  <td>プリンセス・衛兵・呪術師</td>
-                  <td>5T</td>
-                  <td><button type="button" class="btn btn-default btn-sm">編集</button></td>
-                </tr>
-
-                <tr>
-                  <td>作戦その2</td>
-                  <td>踊り子・ガーディアン・祈祷師</td>
-                  <td>3T</td>
-                  <td><button type="button" class="btn btn-default btn-sm">編集</button></td>
-                </tr>
+              <tbody id="tactic-list-tbody">
               </tbody>
             </table>
           </div>
         </div>
 
-        <div class="panel panel-default">
+        <div id="tactic-detail">
+        </div>
+
+        <!-- <div class="panel panel-default">
           <div class="panel-heading">作戦その1</div>
 
-          <!-- Table -->
           <div class="panel-body">
             <table class="table">
               <thead>
@@ -774,12 +297,13 @@
               </tbody>
             </table>
           </div>
-        </div>
+        </div> -->
+
       </div>
 
     </div>
 
-    <div class="tab-pane fade active in" id="dungeon">
+    <div class="tab-pane fade" id="dungeon">
       <div class="col-md-4">
         <div class="alert alert-info">
           デビルエンペラーの攻撃！<br>
@@ -894,13 +418,16 @@
 
 <script src="js/jquery.js"></script>
 <script src="js/bootstrap.min.js"></script>
+<script src="js/bootstrap-select.min.js"></script>
 <script src="js/main.js"></script>
 
 <script>
+$('.selectpicker').selectpicker();
+
 $('#tabs a').click(function (e) {
   e.preventDefault()
   $(this).tab('show')
-})
+});
 </script>
 
 </body>
