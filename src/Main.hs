@@ -122,7 +122,7 @@ main = do
     updatePlayerParty reff
 
   withElem "strategy" $ \etab -> do
-    withElemUnder etab "#add-tactic-btn" $ \e -> do
+    withElemUnder etab "add-tactic-btn" $ \e -> do
       onEvent e Click $ \_ -> do
         onceStateT reff $ do
           ps <- use (board . player)
@@ -143,24 +143,24 @@ main = do
 
 updateTacticTBody :: MonadIO m => Elem -> IORef Field -> m ()
 updateTacticTBody etab reff = do
-  liftIO $ withElemUnder etab "#tactic-list-tbody" $ \e -> do
+  liftIO $ withElemUnder etab "tactic-list-tbody" $ \e -> do
     field <- readIORef reff
     setHTML e $ tacticHTML $ field ^. board ^. tacticList
 
     field <- readIORef reff
     forM_ (IM.assocs $ field ^. board ^. tacticList) $ \(i,_) -> do
-      withElemUnder e ("#edit-tactic-" ++ show i) $ \e -> do
+      withElemUnder e ("edit-tactic-" ++ show i) $ \e -> do
         onEvent e Click $ \_ -> do
-          withElemUnder etab "#tactic-detail" $ \e' -> do
+          withElemUnder etab "tactic-detail" $ \e' -> do
             field <- readIORef reff
             setHTML e' $ tacticTableHTML i $ (field ^. board ^. tacticList) IM.! i
 
             selectpicker ()
 
-            void $ withElemUnder e' "#edit-tactic-done" $ \e'' -> do
+            void $ withElemUnder e' "edit-tactic-done" $ \e'' -> do
               onEvent e'' Click $ \_ -> do
-                withElemUnder etab "#tactic-detail-table" $ \et -> do
-                  withElemUnder et ".selectpicker" $ \es -> do
+                withElemUnder etab "tactic-detail-table" $ \et -> do
+                  withElemsQS et ".selectpicker" $ mapM_ $ \es -> do
                     Just t <- getValue es
                     [_,c,k] <- fmap (splitOn "-") $ getAttr es "id"
 
