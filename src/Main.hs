@@ -11,6 +11,7 @@ import Data.IORef
 import qualified Data.IntMap as IM
 import qualified Data.Map as M
 import Data.List
+import Data.List.Split
 import Lens.Family2
 import Lens.Family2.State.Lazy
 import Lens.Family2.Unchecked
@@ -60,7 +61,7 @@ defField = do
     _dDiscoverMap = areaWith '.',
     _encounterCount = 0,
     _board = Board [princess,madman,sentry] [enemy1] 0 $
-      IM.fromList [(100, M.fromList [("プリンセス", fromList [Attack, Attack, Attack])])]
+      IM.fromList [(0, M.fromList [("プリンセス", fromList [Attack])])]
   }
 
 htmlDMap :: DMap -> String
@@ -88,6 +89,12 @@ appendHTML el t = do
   s <- getProp el "innerHTML"
   setProp el "innerHTML" $ s ++ t
 
+withElemUnder :: MonadIO m => Elem -> ElemID -> (Elem -> m a) -> m a
+withElemUnder el eid m = withElemsQS el ('#' : eid) $ \[e] -> m e
+
+selectpicker :: () -> IO ()
+selectpicker = ffi $ toJSString "function() { $('.selectpicker').selectpicker(); }"
+
 main = do
   reff <- newIORef =<< defField
   field <- readIORef reff
@@ -107,45 +114,65 @@ main = do
 
   onceStateT reff $ updateField reff
 
-  withElem "battle" $ \e ->
-    initBattleScreen e reff $ return ()
+  withElem "main" $ \etab -> do
+    withElemUnder etab "make-party" $ \e -> do
+      forM_ [princess, sentry, madman, shaman, gambler, dancer] $ \c -> do
+        appendHTML e $ characterDetailHTML c
 
-  withElem "make-party" $ \e -> do
-    forM_ [princess, sentry, madman, shaman, gambler, dancer] $ \c -> do
-      appendHTML e $ characterDetailHTML c
+    updatePlayerParty reff
 
-  updatePlayerParty reff
+  withElem "strategy" $ \etab -> do
+    withElemUnder etab "#add-tactic-btn" $ \e -> do
+      onEvent e Click $ \_ -> do
+        onceStateT reff $ do
+          ps <- use (board . player)
+          board . tacticList %= addTactic (M.fromList $ zip (fmap (^.name) ps) (repeat $ fromList [Attack, Attack, Attack]))
 
-  withElemsQS document "#add-tactic-btn" $ mapM_ $ \e -> do
-    onEvent e Click $ \_ -> do
-      onceStateT reff $ do
-        ps <- use (board . player)
-        board . tacticList %= addTactic (M.fromList $ zip (fmap (^.name) ps) (repeat $ fromList [Attack, Attack, Attack]))
+        updateTacticTBody etab reff
 
-      updateTacticTBody reff
+    updateTacticTBody etab reff
 
-  updateTacticTBody reff
+  withElem "battle" $ \etab -> do
+    initBattleScreen etab reff $ return ()
 
-updateTacticTBody :: MonadIO m => IORef Field -> m ()
-updateTacticTBody reff = do
-  liftIO $ withElem "tactic-list-tbody" $ \e -> do
+    withElemUnder etab "tactic-current-detail" $ \e -> do
+      field <- readIORef reff
+      setHTML e $ tacticTableCurrentHTML $ M.fromList $ zip (fmap (^. name) $ field ^. board ^. player) $ repeat $ fromList [Attack]
+
+      selectpicker ()
+
+updateTacticTBody :: MonadIO m => Elem -> IORef Field -> m ()
+updateTacticTBody etab reff = do
+  liftIO $ withElemUnder etab "#tactic-list-tbody" $ \e -> do
     field <- readIORef reff
     setHTML e $ tacticHTML $ field ^. board ^. tacticList
 
+    field <- readIORef reff
     forM_ (IM.assocs $ field ^. board ^. tacticList) $ \(i,_) -> do
-      withElemsQS e ("#edit-tactic-" ++ show i) $ mapM_ $ \e -> do
+      withElemUnder e ("#edit-tactic-" ++ show i) $ \e -> do
         onEvent e Click $ \_ -> do
-          withElem "tactic-detail" $ \e' -> do
+          withElemUnder etab "#tactic-detail" $ \e' -> do
+            field <- readIORef reff
             setHTML e' $ tacticTableHTML i $ (field ^. board ^. tacticList) IM.! i
-            selectpicker ()
-  where
-    selectpicker :: () -> IO ()
-    selectpicker = ffi $ toJSString "function() { $('.selectpicker').selectpicker(); }"
 
-tacticTableHTML :: Int -> Tactic -> String
-tacticTableHTML i tt = concat $
-  ["<div class=\"panel panel-default\">",
-  "  <div class=\"panel-heading\"># " ++ show i ++ "</div>",
+            selectpicker ()
+
+            void $ withElemUnder e' "#edit-tactic-done" $ \e'' -> do
+              onEvent e'' Click $ \_ -> do
+                withElemUnder etab "#tactic-detail-table" $ \et -> do
+                  withElemUnder et ".selectpicker" $ \es -> do
+                    Just t <- getValue es
+                    [_,c,k] <- fmap (splitOn "-") $ getAttr es "id"
+
+                    onceStateT reff $ do
+                      board . tacticList . ixIM i . ixM c . commandMap . ixIM (read k :: Int) .= toCommand t
+
+                setHTML e' ""
+
+tacticTableHTMLWithSelectpicker :: String -> Bool -> Tactic -> String
+tacticTableHTMLWithSelectpicker headingText ifDoneBtn tt = concat $
+  ["<div class=\"panel panel-default\" id=\"tactic-detail-table\">",
+  "  <div class=\"panel-heading\">" ++ headingText ++ "</div>",
   "  <div class=\"panel-body\">",
   "    <table class=\"table\">",
   "      <thead>",
@@ -158,11 +185,17 @@ tacticTableHTML i tt = concat $
   ++ turnTDs ++
   ["      </tbody>",
   "    </table>",
-  "  </div>",
-  "</div>"]
+  "  </div>"] ++
+  if ifDoneBtn
+    then
+      ["  <div class=\"panel-footer\">",
+      "    <button class=\"btn btn-default\" id=\"edit-tactic-done\">完了</button>",
+      "  </div>"]
+    else []
+  ++ ["</div>"]
   where
     tacticSize :: Int
-    tacticSize = listSize $ head $ M.elems tt
+    tacticSize = (^.listSize) $ head $ M.elems tt
 
     charaTHs :: [String] -> [String]
     charaTHs cs = fmap (\c -> "<th>" ++ c ++ "</th>") cs
@@ -170,9 +203,9 @@ tacticTableHTML i tt = concat $
     turnTDs :: [String]
     turnTDs = fmap (\(i,x) -> "<tr>" ++ "<td>" ++ show i ++ "</td>" ++ concat x ++ "</tr>") $ zip [1..] $ fmap (fmap (\x -> "<td>" ++ selectHTML x ++ "</td>")) tts
       where
-        selectHTML :: String -> String
-        selectHTML com = concat $
-          ["<select class=\"selectpicker\">",
+        selectHTML :: (String, Int, String) -> String
+        selectHTML (c,i,com) = concat $
+          ["<select class=\"selectpicker\" id=\"select-" ++ c ++ "-" ++ show i ++ "\">",
           concat (fmap (optionHTML com) $ fmap show $ [Attack, Defence, Escape]),
           "</select>"]
 
@@ -181,8 +214,14 @@ tacticTableHTML i tt = concat $
           True -> "<option selected>" ++ opt ++ "</option>"
           False -> "<option>" ++ opt ++ "</option>"
 
-        tts :: [[String]]
-        tts = transpose $ fmap (fmap show . IM.elems . commandMap) $ M.elems tt
+        tts :: [[(String, Int, String)]]
+        tts = fmap (fmap (\(a,(b,c)) -> (a,b,c))) $ fmap (zip (M.keys tt)) $ transpose $ fmap (zip [0..]) $ fmap (fmap show . IM.elems . (^.commandMap)) $ M.elems tt
+
+tacticTableCurrentHTML :: Tactic -> String
+tacticTableCurrentHTML = tacticTableHTMLWithSelectpicker "コマンド入力" False
+
+tacticTableHTML :: Int -> Tactic -> String
+tacticTableHTML i = tacticTableHTMLWithSelectpicker ("# " ++ show i) True
 
 tacticHTML :: TacticList -> String
 tacticHTML ttl = concat $ map fromTactic (IM.assocs ttl) where
@@ -190,7 +229,7 @@ tacticHTML ttl = concat $ map fromTactic (IM.assocs ttl) where
     "<tr>",
     "  <td>" ++ show i ++ "</td>",
     "  <td>" ++ (concat $ intersperse "・" $ M.keys tt) ++ "</td>",
-    "  <td>" ++ show (listSize $ head $ M.elems tt) ++ "</td>",
+    "  <td>" ++ show ((^. listSize) $ head $ M.elems tt) ++ "</td>",
     "  <td><button type=\"button\" class=\"btn btn-default btn-sm\" id=\"edit-tactic-" ++ show i ++ "\">編集</button></td>",
     "</tr>"]
 

@@ -1,8 +1,14 @@
 module Character (
   Command(..),
+  toCommand,
+
   Action(..),
   Target(..),
-  CommandList(..),
+
+  CommandList,
+  index,
+  listSize,
+  commandMap,
   fromList,
 
   Character,
@@ -38,14 +44,25 @@ import Lens.Family2.State.Lazy
 import Lens.Family2.Unchecked
 
 data Command = Attack | Defence | Escape deriving (Eq, Show)
+
+toCommand :: String -> Command
+toCommand s = head $ filter (\x -> show x == s) [Attack, Defence, Escape]
+
 data Action = AttackTo Target | Iso Command deriving (Show)
 data Target = ToPlayer | ToEnemy deriving (Show)
 
 data CommandList = CommandList {
-  index :: Int,
-  listSize :: Int,
-  commandMap :: IM.IntMap Command
+  _index :: Int,
+  _listSize :: Int,
+  _commandMap :: IM.IntMap Command
 } deriving (Show)
+
+index :: Lens' CommandList Int
+index = lens _index (\f x -> f { _index = x })
+listSize :: Lens' CommandList Int
+listSize = lens _listSize (\f x -> f { _listSize = x })
+commandMap :: Lens' CommandList (IM.IntMap Command)
+commandMap = lens _commandMap (\f x -> f { _commandMap = x })
 
 fromList :: [Command] -> CommandList
 fromList cs = CommandList 0 (length cs) (IM.fromList $ zip [0..] cs)

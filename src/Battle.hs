@@ -1,6 +1,8 @@
 {-# LANGUAGE Rank2Types #-}
 module Battle (
   ix,
+  ixM,
+  ixIM,
 
   Board (Board),
   Tactic,
@@ -15,6 +17,7 @@ module Battle (
   module Character
 ) where
 
+import Control.Arrow
 import Control.Monad.State
 import Data.List
 import qualified Data.Map as M
@@ -28,16 +31,15 @@ import Character
 ix :: Int -> Lens' [a] a
 ix n = lens (!! n) (\l x -> take (n-1) l ++ [x] ++ drop (n+1) l)
 
-getCommand :: CommandList -> (Command, CommandList)
-getCommand cl = (commandMap cl IM.! index cl, cl { index = nextIndex cl }) where
-  nextIndex cl = if (index cl) == (listSize cl) - 1 then 0 else index cl + 1
+ixM :: (Ord a) => a -> Lens' (M.Map a b) b
+ixM n = lens (M.! n) (\l x -> M.insert n x l)
 
-runCharacter :: StateT Character IO Command
-runCharacter = do
-  comList <- use commandList
-  let (c, cl) = getCommand comList
-  commandList .= cl
-  return c
+ixIM :: Int -> Lens' (IM.IntMap b) b
+ixIM n = lens (IM.! n) (\l x -> IM.insert n x l)
+
+getCommand :: CommandList -> (Command, CommandList)
+getCommand cl = ((cl ^. commandMap) IM.! (cl ^. index), cl & index .~ nextIndex) where
+  nextIndex = if (cl^.index) == (cl^.listSize) - 1 then 0 else cl^.index + 1
 
 type Tactic = M.Map String CommandList
 type TacticList = IM.IntMap Tactic
@@ -75,17 +77,25 @@ toAction :: Target -> Command -> Action
 toAction t Attack = AttackTo t
 toAction t com = Iso com
 
+runCommand :: Int -> StateT Board IO [Command]
+runCommand tti = do
+  tt <- use (tacticList . ixIM tti)
+  forM (M.assocs tt) $ \(chara, cl) -> do
+    let (com, cl') = getCommand cl
+    tacticList . ixIM tti . ixM chara .= cl'
+    return com
+
 runBoard :: StateT Board IO ()
 runBoard = do
   turn += 1
 
-  (comp, player') <- lift . fmap unzip . mapM (runStateT runCharacter) =<< use player
-  player .= player'
-  pair1 <- liftM2 zip (return (fmap (toAction ToEnemy) comp)) (use player)
+  comp <- runCommand 0
+  pair1 <- liftM2 zip (return $ fmap (toAction ToEnemy) comp) (use player)
 
-  (come, enemy') <- lift . fmap unzip . mapM (runStateT runCharacter) =<< use enemy
+  es <- use enemy
+  let (come, enemy') = unzip $ fmap (\e -> second (\cl -> e & commandList .~ cl) $ getCommand $ e^.commandList) es
   enemy .= enemy'
-  pair2 <- liftM2 zip (return (fmap (toAction ToPlayer) comp)) (use enemy)
+  pair2 <- liftM2 zip (return $ fmap (toAction ToPlayer) come) (use enemy)
 
   let ps = sortBy (\(_,a) (_,b) -> compare (a^.agility) (b^.agility)) $ concat [pair1,pair2]
 
