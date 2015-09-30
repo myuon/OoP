@@ -60,8 +60,9 @@ defField = do
     _dMap = dm,
     _dDiscoverMap = areaWith '.',
     _encounterCount = 0,
-    _board = Board [princess,madman,sentry] [enemy1] 0 $
-      IM.fromList [(0, M.fromList [("プリンセス", fromList [Attack])])]
+    _board = Board [princess,madman,sentry] [enemy1] 0
+      (IM.fromList [(0, M.fromList [("プリンセス", fromList [Attack])])])
+      Waiting
   }
 
 htmlDMap :: DMap -> String
@@ -133,7 +134,26 @@ main = do
     updateTacticTBody etab reff
 
   withElem "battle" $ \etab -> do
-    initBattleScreen etab reff $ return ()
+    withElemUnder etab "start-battle" $ \esb -> do
+      onEvent esb Click $ \_ -> do
+        setStyle esb "display" "none"
+
+        initBattleScreen etab reff
+
+        void $ withElemUnder etab "step-battle" $ \e -> do
+          liftIO $ onEvent e Click $ \_ -> do
+            onceStateT reff $ zoom board runBoard
+
+            b <- fmap (^. board) $ readIORef reff
+            displayBattleScreen etab b
+
+            field <- readIORef reff
+            case field ^. board ^. battleState of
+              Win -> do
+                setStyle esb "display" "block"
+              Lose -> do
+                setStyle esb "display" "block"
+              _ -> return ()
 
     withElemUnder etab "tactic-current-detail" $ \e -> do
       field <- readIORef reff
@@ -206,7 +226,7 @@ tacticTableHTMLWithSelectpicker headingText ifDoneBtn tt = concat $
         selectHTML :: (String, Int, String) -> String
         selectHTML (c,i,com) = concat $
           ["<select class=\"selectpicker\" id=\"select-" ++ c ++ "-" ++ show i ++ "\">",
-          concat (fmap (optionHTML com) $ fmap show $ [Attack, Defence, Escape]),
+          concat (fmap (optionHTML com) $ fmap show $ [Attack, Defence]),
           "</select>"]
 
         optionHTML :: String -> String -> String
@@ -295,33 +315,27 @@ characterEnemyHTML chara = concat [
   "  </div>",
   "</div>"]
 
-initBattleScreen :: MonadIO m => Elem -> IORef Field -> IO () -> m ()
-initBattleScreen em reff cont = do
+initBattleScreen :: MonadIO m => Elem -> IORef Field -> m ()
+initBattleScreen etab reff = do
   b <- liftIO $ fmap (^. board) $ readIORef reff
 
-  withElemsQS em "#player-chara" $ \[e] -> do
+  withElemUnder etab "player-chara" $ \e -> do
+    setHTML e ""
+
     forM_ (b ^. player) $ \p -> do
       appendHTML e $ characterPlayerHTML p
 
-  withElemsQS em "#enemy-chara" $ \[e] -> do
+  withElemUnder etab "enemy-chara" $ \e -> do
+    setHTML e ""
+
     forM_ (b ^. enemy) $ \p -> do
       appendHTML e $ characterEnemyHTML p
 
-  displayBattleScreen em b
-
-  withElemsQS em "#step-battle" $ \[e] -> do
-    liftIO $ onEvent e Click $ \_ -> do
-      onceStateT reff $ zoom board runBoard
-      cont
-
-      b <- fmap (^. board) $ readIORef reff
-      displayBattleScreen em b
-
-  return ()
+  displayBattleScreen etab b
 
 displayBattleScreen :: MonadIO m => Elem -> Board -> m ()
-displayBattleScreen em b = do
-  withElemsQS em "#player-chara" $ mapM_ $ \e0 -> do
+displayBattleScreen etab b = do
+  withElemUnder etab "player-chara" $ \e0 -> do
     let insertText eid s = do {
       withElemsQS e0 eid $ \es -> do
         forM_ (zip es $ b ^. player) $ \(e,p) -> do
@@ -344,7 +358,7 @@ displayBattleScreen em b = do
         when (p ^. maxMP /= 0) $ do
           setStyle e "width" $ (++ "%") $ show $ (p ^. mp) * 100 `div` (p ^. maxMP)
 
-  withElemsQS em "#enemy-chara" $ mapM_ $ \e0 -> do
+  withElemUnder etab "enemy-chara" $ \e0 -> do
     let insertText eid s = do {
       withElemsQS e0 eid $ \es -> do
         forM_ (zip es $ b ^. enemy) $ \(e,p) -> do
@@ -397,18 +411,26 @@ updateField reff = do
       e' <- getParent e
       setStyle e' "display" "block"
 
-    withElem "dungeon-battle" $ \e -> do
-      initBattleScreen e reff $ do
-        f <- readIORef reff
-        when (all (<= 0) $ fmap (^. hp) $ f ^. board ^. enemy) $ do
-          taboff ()
+    void $ withElem "dungeon-battle" $ \etab -> do
+      initBattleScreen etab reff
 
-          withElemsQS document "#tabs a[href=\"#dungeon-battle\"]" $ \[e] -> do
-            e' <- getParent e
-            setStyle e' "display" "none"
+      withElemUnder etab "step-battle" $ \e -> do
+        liftIO $ onEvent e Click $ \_ -> do
+          onceStateT reff $ zoom board runBoard
 
-          withElemsQS e "#player-chara" $ mapM_ $ \e0 -> setHTML e0 ""
-          withElemsQS e "#enemy-chara" $ mapM_ $ \e0 -> setHTML e0 ""
+          f <- readIORef reff
+          when (all (<= 0) $ fmap (^. hp) $ f ^. board ^. enemy) $ do
+            taboff ()
+
+            withElemsQS document "#tabs a[href=\"#dungeon-battle\"]" $ \[e] -> do
+              e' <- getParent e
+              setStyle e' "display" "none"
+
+            withElemsQS e "#player-chara" $ mapM_ $ \e0 -> setHTML e0 ""
+            withElemsQS e "#enemy-chara" $ mapM_ $ \e0 -> setHTML e0 ""
+
+          b <- fmap (^. board) $ readIORef reff
+          displayBattleScreen etab b
 
   where
     tabon :: () -> IO ()
@@ -425,8 +447,9 @@ updateField reff = do
         position .= p'
         encounterCount += 1
 
-onceStateT :: IORef s -> StateT s IO () -> IO ()
+onceStateT :: IORef s -> StateT s IO a -> IO a
 onceStateT ref m = do
   x <- readIORef ref
-  x' <- execStateT m x
+  (a,x') <- runStateT m x
   writeIORef ref $! x'
+  return a

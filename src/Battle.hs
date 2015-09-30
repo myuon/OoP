@@ -4,6 +4,7 @@ module Battle (
   ixM,
   ixIM,
 
+  BattleState(..),
   Board (Board),
   Tactic,
   TacticList,
@@ -13,6 +14,7 @@ module Battle (
   enemy,
   turn,
   tacticList,
+  battleState,
 
   module Character
 ) where
@@ -48,11 +50,14 @@ addTactic :: Tactic -> TacticList -> TacticList
 addTactic x tt = IM.insert (mi + 1) x tt where
   mi = maximum $ IM.keys tt
 
+data BattleState = Waiting | Win | Lose | Battling deriving (Eq, Show)
+
 data Board = Board {
   _player :: [Character],
   _enemy :: [Character],
   _turn :: Int,
-  _tacticList :: TacticList
+  _tacticList :: TacticList,
+  _battleState :: BattleState
 } deriving (Show)
 
 player :: Lens' Board [Character]
@@ -63,6 +68,8 @@ turn :: Lens' Board Int
 turn = lens _turn (\f x -> f { _turn = x })
 tacticList :: Lens' Board TacticList
 tacticList = lens _tacticList (\f x -> f { _tacticList = x })
+battleState :: Lens' Board BattleState
+battleState = lens _battleState (\f x -> f { _battleState = x })
 
 attackCalc :: Character -> Int
 attackCalc ch = (ch ^. strength) * 5
@@ -111,8 +118,16 @@ runBoard = do
   lift . print =<< use player
   lift . print =<< use enemy
 
+  es <- use enemy
+  when (all (\e -> e ^. hp <= 0) es) $ do
+    battleState .= Win
+
+  ps <- use player
+  when (all (\p -> p ^. hp <= 0) ps) $ do
+    battleState .= Lose
+
 main = do
-  let b = Board [princess, madman] [enemy1] 0 $ IM.fromList []
+  let b = Board [princess, madman] [enemy1] 0 (IM.fromList []) Waiting
   execStateT (runBoard >> runBoard >> runBoard >> runBoard >> runBoard) b
 
 {-
