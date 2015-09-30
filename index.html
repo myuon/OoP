@@ -34,7 +34,7 @@
   </div>
 
   <div class="tab-content">
-    <div class="tab-pane fade" id="battle">
+    <div class="tab-pane fade active in" id="battle">
       <div class="col-md-4">
         <div class="alert alert-info">
           デビルエンペラーの攻撃！<br>
@@ -45,6 +45,7 @@
       <div class="col-md-8">
         <div class="panel panel-default">
           <div class="panel-body">
+            <button class="btn btn-default" id="start-battle">戦闘開始</button>
             <div class="row" id="enemy-chara">
             </div>
 
@@ -59,106 +60,7 @@
           </div>
         </div>
 
-
-        <div class="panel panel-default">
-          <div class="panel-body">
-            <div class="row">
-              <div class="col-md-offset-4 col-md-4">
-                <div class="enemy">
-                  デビルエンペラー<br>
-                  [毒, 麻痺, スキル抑制]
-                  <div class="progress">
-                    <div class="progress-bar" role="progressbar" style="width: 60%;">
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-
-              <div class="col-md-4">
-                <div class="player">
-                  プリンセス<br>
-                  [混乱]
-                  <div class="progress">
-                    <div class="progress-bar" role="progressbar" style="width: 20%;">
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-md-4">
-                <div class="player">
-                  衛兵<br>&nbsp;
-                  <div class="progress">
-                    <div class="progress-bar" role="progressbar" style="width: 80%;">
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-md-4">
-                <div class="player">
-                  狂人<br>
-                  [アドレナリン調整]
-                  <div class="progress">
-                    <div class="progress-bar" role="progressbar" style="width: 90%;">
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-            </div>
-          </div>
-
-
-          <div class="panel-footer text-right">
-            <button class="btn btn-warning">固有スキル</button>
-            <button class="btn btn-default">次のターン</button>
-          </div>
-        </div>
-        <div class="panel panel-default">
-          <!-- Default panel contents -->
-          <div class="panel-heading">コマンドリスト</div>
-          <div class="panel-body">
-            <table class="table">
-              <thead>
-                <tr>
-                  <th>ターン</th>
-                  <th>プリンセス</th>
-                  <th>衛兵</th>
-                  <th>狂人</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>1</td>
-                  <td>攻撃</td>
-                  <td>攻撃</td>
-                  <td>攻撃</td>
-                </tr>
-                <tr>
-                  <td>2</td>
-                  <td>攻撃</td>
-                  <td>攻撃</td>
-                  <td>攻撃</td>
-                </tr>
-                <tr>
-                  <td>3</td>
-                  <td>攻撃</td>
-                  <td>攻撃</td>
-                  <td>攻撃</td>
-                </tr>
-                <tr>
-                  <td>4</td>
-                  <td>攻撃</td>
-                  <td>攻撃</td>
-                  <td>攻撃</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+        <div id="tactic-current-detail">
         </div>
       </div>
     </div>
@@ -202,7 +104,7 @@
 
     </div>
 
-    <div class="tab-pane fade active in" id="strategy">
+    <div class="tab-pane fade" id="strategy">
       <div class="col-md-4">
         <div class="alert alert-success" role="alert">
           作戦を選んでください。<br>
@@ -245,59 +147,6 @@
 
         <div id="tactic-detail">
         </div>
-
-        <!-- <div class="panel panel-default">
-          <div class="panel-heading">作戦その1</div>
-
-          <div class="panel-body">
-            <table class="table">
-              <thead>
-                <tr>
-                  <th>T</th>
-                  <th>プリンセス</th>
-                  <th>衛兵</th>
-                  <th>呪術師</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>1</td>
-                  <td>決起の詠唱</td>
-                  <td>攻撃</td>
-                  <td>毒の呪い</td>
-                </tr>
-
-                <tr>
-                  <td>2</td>
-                  <td>攻撃</td>
-                  <td>攻撃</td>
-                  <td>麻痺の呪い</td>
-                </tr>
-
-                <tr>
-                  <td>3</td>
-                  <td>神秘の詠唱</td>
-                  <td>攻撃</td>
-                  <td>攻撃</td>
-                </tr>
-
-                <tr>
-                  <td>4</td>
-                  <td>攻撃</td>
-                  <td>攻撃</td>
-                  <td>攻撃</td>
-                </tr>
-
-                <tr>
-                  <td>5</td>
-                  <td>攻撃</td>
-                  <td>攻撃</td>
-                  <td>攻撃</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div> -->
 
       </div>
 
